@@ -88,7 +88,7 @@ const Header: React.FC = () => {
     >
       <div className="container max-w-6xl mx-auto px-4 flex items-center justify-between">
         <a href="#home" onClick={(e) => handleNavClick(e, "home")} className="flex items-center">
-          <span className="font-display font-bold text-2xl gradient-text">PixelCraft</span>
+          <span className="font-display font-bold text-2xl gradient-text">Jey's artifact..</span>
         </a>
 
         {/* Desktop Navigation */}

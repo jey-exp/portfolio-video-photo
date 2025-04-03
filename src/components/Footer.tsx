@@ -9,7 +9,7 @@ const Footer: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="col-span-1 md:col-span-2">
             <a href="#" className="inline-block mb-4">
-              <span className="font-display font-bold text-2xl gradient-text">PixelCraft</span>
+              <span className="font-display font-bold text-2xl gradient-text">Jey's portfolio</span>
             </a>
             <p className="text-muted-foreground mb-4 max-w-md">
               Professional video and photo editing services, specializing in creating 
@@ -72,7 +72,7 @@ const Footer: React.FC = () => {
 
         <div className="border-t border-border mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-muted-foreground text-sm">
-            © {new Date().getFullYear()} PixelCraft. All rights reserved.
+            © {new Date().getFullYear()} JeyGR. All rights reserved.
           </p>
           <div className="mt-4 md:mt-0">
             <a href="#" className="text-xs text-muted-foreground hover:text-accent transition-colors mr-4">
