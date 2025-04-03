@@ -65,7 +65,7 @@ const About: React.FC = () => {
     // Create a dummy PDF link and trigger download
     const link = document.createElement('a');
     link.href = 'https://example.com/resume.pdf'; // Replace with actual resume URL
-    link.download = 'Jey.pdf';
+    link.download = 'PixelCraft_Resume.pdf';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
