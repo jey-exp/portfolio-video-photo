@@ -19,13 +19,17 @@ const Index = () => {
         const elementVisible = 150;
         
         if (elementTop < window.innerHeight - elementVisible) {
-          element.classList.add("visible");
+          // Add a small delay to ensure proper rendering
+          setTimeout(() => {
+            element.classList.add('visible');
+          }, 50);
         }
       });
     };
     
     window.addEventListener("scroll", handleScroll);
-    handleScroll(); // Initialize on load
+    // Initialize animations for elements already in viewport
+    setTimeout(handleScroll, 200);
     
     return () => {
       window.removeEventListener("scroll", handleScroll);

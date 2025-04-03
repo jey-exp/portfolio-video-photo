@@ -98,6 +98,15 @@
   .animate-stagger-3 {
     animation-delay: 0.3s;
   }
+
+  /* Improved scroll animation classes */
+  .scroll-animate {
+    @apply transition-all duration-700 ease-out;
+  }
+
+  .scroll-animate.visible {
+    @apply opacity-100 translate-y-0 translate-x-0;
+  }
 }
 
 @keyframes fadeUp {

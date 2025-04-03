@@ -39,23 +39,40 @@ const Services: React.FC = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // Improved intersection observer implementation
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
-            entry.target.classList.add('animate-fade-in');
+            // Add a small delay before adding the class to ensure DOM is ready
+            setTimeout(() => {
+              entry.target.classList.add('visible');
+            }, 100);
           }
         });
       },
-      { threshold: 0.1 }
+      { 
+        threshold: 0.1,
+        rootMargin: "0px 0px -100px 0px" // Trigger animation a bit earlier
+      }
     );
 
+    const titleSection = document.querySelector('.services-title-section');
+    if (titleSection) {
+      observer.observe(titleSection);
+    }
+
     const serviceCards = document.querySelectorAll('.service-card');
-    serviceCards.forEach(card => {
+    serviceCards.forEach((card, index) => {
+      // Add staggered animation delay
+      (card as HTMLElement).style.transitionDelay = `${index * 100}ms`;
       observer.observe(card);
     });
 
     return () => {
+      if (titleSection) {
+        observer.unobserve(titleSection);
+      }
       serviceCards.forEach(card => {
         observer.unobserve(card);
       });
@@ -65,7 +82,7 @@ const Services: React.FC = () => {
   return (
     <section id="services" className="bg-muted py-20" ref={sectionRef}>
       <div className="section-container">
-        <div className="text-center max-w-2xl mx-auto mb-12 animate-fade-up">
+        <div className="text-center max-w-2xl mx-auto mb-12 services-title-section scroll-animate opacity-0 transform translate-y-8">
           <h2 className="section-title">
             My <span className="gradient-text">Services</span>
           </h2>
@@ -79,8 +96,7 @@ const Services: React.FC = () => {
           {services.map((service, index) => (
             <div 
               key={index} 
-              className="bg-card rounded-xl p-6 shadow-md card-hover opacity-0 service-card"
-              style={{ transitionDelay: `${index * 0.1}s` }}
+              className="bg-card rounded-xl p-6 shadow-md card-hover opacity-0 transform translate-y-8 service-card scroll-animate"
             >
               <div className="bg-secondary/50 rounded-lg w-16 h-16 flex items-center justify-center mb-4 text-accent">
                 {service.icon}
