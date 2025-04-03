@@ -1,38 +1,62 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Play } from "lucide-react";
+import { ArrowRight, Play, X } from "lucide-react";
+import { Dialog, DialogContent, DialogClose } from "@/components/ui/dialog";
 
 const Hero: React.FC = () => {
+  const [showReel, setShowReel] = useState(false);
+  
+  const handleViewWork = () => {
+    const portfolioSection = document.getElementById("portfolio");
+    if (portfolioSection) {
+      window.scrollTo({
+        top: portfolioSection.offsetTop - 80,
+        behavior: "smooth"
+      });
+    }
+  };
+  
+  const handleShowreel = () => {
+    setShowReel(true);
+  };
+
   return (
     <section id="home" className="pt-24 pb-16 md:pt-32 md:pb-24">
       <div className="container max-w-6xl mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-          <div className="space-y-6 animate-fade-in">
-            <div className="inline-block px-4 py-2 bg-muted rounded-full text-sm font-medium">
+          <div className="space-y-6">
+            <div className="inline-block px-4 py-2 bg-muted rounded-full text-sm font-medium animate-fade-up">
               <span className="text-accent">14K+</span> YouTube Subscribers
             </div>
-            <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
+            <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold leading-tight animate-fade-up animate-stagger-1">
               Turning <span className="gradient-text">Moments</span> Into <span className="gradient-text">Masterpieces</span>
             </h1>
-            <p className="text-muted-foreground text-lg max-w-lg">
+            <p className="text-muted-foreground text-lg max-w-lg animate-fade-up animate-stagger-2">
               Video & photo editing professional specializing in cinematic edits, 
               color grading, and visual storytelling that captures attention.
             </p>
-            <div className="flex flex-wrap gap-4 pt-2">
-              <Button className="bg-accent hover:bg-accent/90 text-white px-6 py-6">
+            <div className="flex flex-wrap gap-4 pt-2 animate-fade-up animate-stagger-3">
+              <Button 
+                onClick={handleViewWork}
+                className="bg-accent hover:bg-accent/90 text-white px-6 py-6 transition-all duration-300 hover:-translate-y-1"
+              >
                 View My Work
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
-              <Button variant="outline" className="border-accent text-accent hover:bg-accent/10 px-6 py-6">
+              <Button 
+                variant="outline" 
+                onClick={handleShowreel}
+                className="border-accent text-accent hover:bg-accent/10 px-6 py-6 transition-all duration-300 hover:-translate-y-1"
+              >
                 <Play className="mr-2 h-4 w-4" />
                 Watch Showreel
               </Button>
             </div>
           </div>
-          <div className="relative hidden md:block">
+          <div className="relative hidden md:block animate-slide-in">
             <div className="absolute -inset-0.5 bg-gradient-to-r from-accent to-primary/40 rounded-xl blur opacity-30"></div>
-            <div className="relative bg-card rounded-xl overflow-hidden aspect-video shadow-2xl animate-slide-in-right">
+            <div className="relative bg-card rounded-xl overflow-hidden aspect-video shadow-2xl">
               <video 
                 className="w-full h-full object-cover"
                 poster="https://images.unsplash.com/photo-1605810230434-7631ac76ec81"
@@ -55,6 +79,26 @@ const Hero: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Showreel Dialog */}
+      <Dialog open={showReel} onOpenChange={setShowReel}>
+        <DialogContent className="sm:max-w-[900px] p-0 bg-black">
+          <DialogClose className="absolute right-4 top-4 rounded-full bg-background/70 p-2 z-50">
+            <X className="h-4 w-4" />
+            <span className="sr-only">Close</span>
+          </DialogClose>
+          <div className="aspect-video w-full">
+            <iframe
+              className="w-full h-full"
+              src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1"
+              title="Showreel"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
+          </div>
+        </DialogContent>
+      </Dialog>
     </section>
   );
 };

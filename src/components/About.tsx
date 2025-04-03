@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Award, Users, Video, Download } from "lucide-react";
 
@@ -22,11 +22,60 @@ const statsItems = [
 ];
 
 const About: React.FC = () => {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const textRef = useRef<HTMLDivElement>(null);
+  const imageRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            if (entry.target === imageRef.current) {
+              entry.target.classList.add('animate-fade-in');
+            } 
+            if (entry.target === textRef.current) {
+              entry.target.classList.add('animate-fade-up');
+            }
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    if (imageRef.current) {
+      observer.observe(imageRef.current);
+    }
+    
+    if (textRef.current) {
+      observer.observe(textRef.current);
+    }
+
+    return () => {
+      if (imageRef.current) {
+        observer.unobserve(imageRef.current);
+      }
+      if (textRef.current) {
+        observer.unobserve(textRef.current);
+      }
+    };
+  }, []);
+
+  const handleDownload = () => {
+    // Create a dummy PDF link and trigger download
+    const link = document.createElement('a');
+    link.href = 'https://example.com/resume.pdf'; // Replace with actual resume URL
+    link.download = 'PixelCraft_Resume.pdf';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
-    <section id="about" className="bg-muted py-20">
+    <section id="about" className="bg-muted py-20" ref={sectionRef}>
       <div className="section-container">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div className="relative">
+          <div className="relative opacity-0" ref={imageRef}>
             <div className="absolute -inset-1 bg-gradient-to-r from-accent to-primary/40 rounded-xl blur opacity-30"></div>
             <div className="relative bg-card rounded-xl overflow-hidden shadow-2xl">
               <img 
@@ -38,7 +87,11 @@ const About: React.FC = () => {
               <div className="absolute bottom-0 left-0 right-0 p-6">
                 <div className="grid grid-cols-3 gap-4">
                   {statsItems.map((item, index) => (
-                    <div key={index} className="text-center">
+                    <div 
+                      key={index} 
+                      className="text-center animate-fade-up"
+                      style={{ animationDelay: `${0.3 + index * 0.1}s` }}
+                    >
                       <div className="bg-secondary/50 rounded-lg w-12 h-12 mx-auto flex items-center justify-center mb-2 text-accent">
                         {item.icon}
                       </div>
@@ -51,7 +104,7 @@ const About: React.FC = () => {
             </div>
           </div>
 
-          <div className="space-y-6">
+          <div className="space-y-6 opacity-0" ref={textRef}>
             <h2 className="section-title">
               About <span className="gradient-text">Me</span>
             </h2>
@@ -65,7 +118,10 @@ const About: React.FC = () => {
               From color correction to complex video editing, I bring years of self-taught expertise and a genuine passion for visual media to every project.
             </p>
             <div className="pt-2">
-              <Button className="bg-accent hover:bg-accent/80">
+              <Button 
+                className="bg-accent hover:bg-accent/80 transition-all duration-300 hover:-translate-y-1"
+                onClick={handleDownload}
+              >
                 <Download className="mr-2 h-4 w-4" />
                 Download Resume
               </Button>

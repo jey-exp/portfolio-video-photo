@@ -7,10 +7,26 @@ import { cn } from "@/lib/utils";
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [activeSection, setActiveSection] = useState("home");
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
+      
+      // Determine which section is in view
+      const sections = ["home", "services", "portfolio", "about", "contact"];
+      const currentSection = sections.find(section => {
+        const element = document.getElementById(section);
+        if (element) {
+          const rect = element.getBoundingClientRect();
+          return rect.top <= 100 && rect.bottom >= 100;
+        }
+        return false;
+      });
+      
+      if (currentSection) {
+        setActiveSection(currentSection);
+      }
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -23,13 +39,43 @@ const Header: React.FC = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
+    e.preventDefault();
+    setActiveSection(targetId);
+    
+    const target = document.getElementById(targetId);
+    if (target) {
+      window.scrollTo({
+        top: target.offsetTop - 80,
+        behavior: "smooth"
+      });
+    }
+    
+    if (isMenuOpen) {
+      setIsMenuOpen(false);
+    }
+  };
+
   const navItems = [
-    { name: "Home", href: "#home" },
-    { name: "Services", href: "#services" },
-    { name: "Portfolio", href: "#portfolio" },
-    { name: "About", href: "#about" },
-    { name: "Contact", href: "#contact" },
+    { name: "Home", href: "#home", id: "home" },
+    { name: "Services", href: "#services", id: "services" },
+    { name: "Portfolio", href: "#portfolio", id: "portfolio" },
+    { name: "About", href: "#about", id: "about" },
+    { name: "Contact", href: "#contact", id: "contact" },
   ];
+
+  const handleHireMe = () => {
+    const contactSection = document.getElementById("contact");
+    if (contactSection) {
+      window.scrollTo({
+        top: contactSection.offsetTop - 80,
+        behavior: "smooth"
+      });
+    }
+    if (isMenuOpen) {
+      setIsMenuOpen(false);
+    }
+  };
 
   return (
     <header
@@ -41,7 +87,7 @@ const Header: React.FC = () => {
       )}
     >
       <div className="container max-w-6xl mx-auto px-4 flex items-center justify-between">
-        <a href="#home" className="flex items-center">
+        <a href="#home" onClick={(e) => handleNavClick(e, "home")} className="flex items-center">
           <span className="font-display font-bold text-2xl gradient-text">PixelCraft</span>
         </a>
 
@@ -51,12 +97,25 @@ const Header: React.FC = () => {
             <a
               key={item.name}
               href={item.href}
-              className="font-medium text-sm hover:text-accent transition-colors"
+              onClick={(e) => handleNavClick(e, item.id)}
+              className={cn(
+                "font-medium text-sm transition-all duration-300 relative",
+                activeSection === item.id 
+                  ? "text-accent" 
+                  : "hover:text-accent/80",
+                "after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-accent after:origin-bottom-right after:transition-transform after:duration-300",
+                activeSection === item.id && "after:scale-x-100 after:origin-bottom-left"
+              )}
             >
               {item.name}
             </a>
           ))}
-          <Button className="bg-accent hover:bg-accent/80">Hire Me</Button>
+          <Button 
+            className="bg-accent hover:bg-accent/80 transition-all duration-300"
+            onClick={handleHireMe}
+          >
+            Hire Me
+          </Button>
         </nav>
 
         {/* Mobile Menu Button */}
@@ -77,17 +136,25 @@ const Header: React.FC = () => {
         )}
       >
         <div className="flex flex-col h-full justify-center items-center space-y-8 p-4">
-          {navItems.map((item) => (
+          {navItems.map((item, index) => (
             <a
               key={item.name}
               href={item.href}
-              className="font-display font-medium text-xl hover:text-accent transition-colors"
-              onClick={toggleMenu}
+              className={cn(
+                "font-display font-medium text-xl transition-all duration-300",
+                activeSection === item.id ? "text-accent" : "hover:text-accent/80",
+                "animate-fade-up",
+                `animate-stagger-${index + 1}`
+              )}
+              onClick={(e) => handleNavClick(e, item.id)}
             >
               {item.name}
             </a>
           ))}
-          <Button className="bg-accent hover:bg-accent/80 mt-4" onClick={toggleMenu}>
+          <Button 
+            className="bg-accent hover:bg-accent/80 mt-4 animate-fade-up animate-stagger-3" 
+            onClick={handleHireMe}
+          >
             Hire Me
           </Button>
         </div>

@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useEffect } from "react";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import Services from "@/components/Services";
@@ -9,6 +9,29 @@ import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 
 const Index = () => {
+  // Add a scroll-based animation effect
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollElements = document.querySelectorAll(".scroll-animate");
+      
+      scrollElements.forEach(element => {
+        const elementTop = element.getBoundingClientRect().top;
+        const elementVisible = 150;
+        
+        if (elementTop < window.innerHeight - elementVisible) {
+          element.classList.add("visible");
+        }
+      });
+    };
+    
+    window.addEventListener("scroll", handleScroll);
+    handleScroll(); // Initialize on load
+    
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Header />

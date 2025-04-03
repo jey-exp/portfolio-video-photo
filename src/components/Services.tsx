@@ -1,6 +1,6 @@
 
-import React from "react";
-import { Camera, Film, Palette, Video, Play, FastForward, Edit, ImagePlus } from "lucide-react";
+import React, { useEffect, useRef } from "react";
+import { Camera, Film, Palette, Video, FastForward, Edit, ImagePlus } from "lucide-react";
 
 const services = [
   {
@@ -36,10 +36,36 @@ const services = [
 ];
 
 const Services: React.FC = () => {
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('animate-fade-in');
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    const serviceCards = document.querySelectorAll('.service-card');
+    serviceCards.forEach(card => {
+      observer.observe(card);
+    });
+
+    return () => {
+      serviceCards.forEach(card => {
+        observer.unobserve(card);
+      });
+    };
+  }, []);
+
   return (
-    <section id="services" className="bg-muted py-20">
+    <section id="services" className="bg-muted py-20" ref={sectionRef}>
       <div className="section-container">
-        <div className="text-center max-w-2xl mx-auto mb-12">
+        <div className="text-center max-w-2xl mx-auto mb-12 animate-fade-up">
           <h2 className="section-title">
             My <span className="gradient-text">Services</span>
           </h2>
@@ -53,7 +79,8 @@ const Services: React.FC = () => {
           {services.map((service, index) => (
             <div 
               key={index} 
-              className="bg-card rounded-xl p-6 shadow-md card-hover"
+              className="bg-card rounded-xl p-6 shadow-md card-hover opacity-0 service-card"
+              style={{ transitionDelay: `${index * 0.1}s` }}
             >
               <div className="bg-secondary/50 rounded-lg w-16 h-16 flex items-center justify-center mb-4 text-accent">
                 {service.icon}
