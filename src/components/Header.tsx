@@ -82,13 +82,13 @@ const Header: React.FC = () => {
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
         isScrolled
-          ? "bg-background/90 backdrop-blur-lg shadow-md py-3"
+          ? "md:bg-background/40 md:backdrop-blur-lg md:shadow-md py-3"
           : "bg-transparent py-5"
       )}
     >
       <div className="container max-w-6xl mx-auto px-4 flex items-center justify-between">
         <a href="#home" onClick={(e) => handleNavClick(e, "home")} className="flex items-center">
-          <span className="font-display font-bold text-2xl gradient-text">PixelCraft</span>
+          <span className="font-display font-bold text-2xl gradient-text">Jey's artifact..</span>
         </a>
 
         {/* Desktop Navigation */}

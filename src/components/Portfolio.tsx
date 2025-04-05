@@ -1,5 +1,4 @@
-
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Play } from "lucide-react";
@@ -52,12 +51,38 @@ const portfolioItems = [
 ];
 
 const Portfolio: React.FC = () => {
-  const [activeCategory, setActiveCategory] = useState("All");
+  const [activeCategory, setActiveCategory] = useState<String>("All");
   const [hoveredItem, setHoveredItem] = useState<number | null>(null);
+  const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   const filteredItems = activeCategory === "All" 
     ? portfolioItems 
     : portfolioItems.filter(item => item.category === activeCategory);
+
+  // Animation observer for portfolio items
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('animate-fade-in-up');
+            entry.target.classList.remove('opacity-0');
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    itemRefs.current.forEach(ref => {
+      if (ref) observer.observe(ref);
+    });
+
+    return () => {
+      itemRefs.current.forEach(ref => {
+        if (ref) observer.unobserve(ref);
+      });
+    };
+  }, [filteredItems]);
 
   return (
     <section id="portfolio" className="py-20">
@@ -77,10 +102,10 @@ const Portfolio: React.FC = () => {
               key={category}
               variant={activeCategory === category ? "default" : "outline"}
               className={cn(
-                "rounded-full",
+                "rounded-full transform transition-all duration-300 hover:scale-105",
                 activeCategory === category 
-                  ? "bg-accent hover:bg-accent/80"
-                  : "text-foreground hover:text-accent"
+                  ? "bg-accent hover:bg-accent/80 scale-105"
+                  : "text-foreground hover:-translate-y-1"
               )}
               onClick={() => setActiveCategory(category)}
             >
@@ -93,37 +118,55 @@ const Portfolio: React.FC = () => {
           {filteredItems.map((item, index) => (
             <div 
               key={index}
-              className="bg-card rounded-xl overflow-hidden shadow-md card-hover"
+              ref={el => itemRefs.current[index] = el}
+              className="bg-card rounded-xl overflow-hidden shadow-md card-hover 
+                opacity-0 transform transition-all duration-500 hover:scale-[1.02] 
+                hover:shadow-xl"
               onMouseEnter={() => setHoveredItem(index)}
               onMouseLeave={() => setHoveredItem(null)}
+              style={{ animationDelay: `${index * 0.1}s` }}
             >
-              <div className="aspect-video relative">
+              <div className="aspect-video relative overflow-hidden">
                 <img 
                   src={item.thumbnail}
                   alt={item.title}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover transition-transform duration-500 
+                    hover:scale-105"
                 />
                 <div className={cn(
-                  "absolute inset-0 bg-background/60 backdrop-blur-sm flex items-center justify-center transition-opacity duration-300",
+                  "absolute inset-0 bg-background/60 backdrop-blur-sm flex items-center justify-center transition-all duration-300",
                   hoveredItem === index ? "opacity-100" : "opacity-0"
                 )}>
                   {item.type === "video" && (
-                    <Button size="icon" className="rounded-full bg-accent hover:bg-accent/80 w-14 h-14">
-                      <Play className="h-6 w-6" />
+                    <Button 
+                      size="icon" 
+                      className="rounded-full bg-accent hover:bg-accent/80 w-14 h-14
+                        transition-transform duration-300 hover:scale-110"
+                    >
+                      <Play className="h-6 w-6 transition-transform duration-300 hover:translate-x-0.5" />
                     </Button>
                   )}
                   {item.type === "photo" && (
-                    <Button className="bg-accent hover:bg-accent/80">View Full Size</Button>
+                    <Button 
+                      className="bg-accent hover:bg-accent/80 transition-transform duration-300 
+                        hover:translate-y-[-2px]"
+                    >
+                      View Full Size
+                    </Button>
                   )}
                 </div>
                 <div className="absolute top-3 left-3">
-                  <span className="bg-accent/90 text-white text-xs font-medium px-2.5 py-1 rounded">
+                  <span className="bg-accent/90 text-white text-xs font-medium px-2.5 py-1 rounded
+                    transition-transform duration-300 hover:scale-105">
                     {item.category}
                   </span>
                 </div>
               </div>
               <div className="p-4">
-                <h3 className="font-display font-semibold text-lg">{item.title}</h3>
+                <h3 className="font-display font-semibold text-lg transition-colors duration-300 
+                  hover:text-accent">
+                  {item.title}
+                </h3>
                 <p className="text-sm text-muted-foreground">{item.description}</p>
               </div>
             </div>
@@ -131,7 +174,11 @@ const Portfolio: React.FC = () => {
         </div>
 
         <div className="text-center mt-12">
-          <Button variant="outline" className="border-accent text-accent hover:bg-accent/10">
+          <Button 
+            variant="outline" 
+            className="border-accent text-accent hover:bg-accent/10 
+              transition-transform duration-300 hover:-translate-y-1"
+          >
             View More Work
           </Button>
         </div>

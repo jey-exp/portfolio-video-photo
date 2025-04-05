@@ -3,7 +3,9 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Mail, Phone, MapPin, Send } from "lucide-react";
+import { Mail, MapPin, Send, Instagram } from "lucide-react";
+import { FaDiscord } from "react-icons/fa6";
+
 
 const Contact: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
@@ -39,17 +41,17 @@ const Contact: React.FC = () => {
                 </div>
                 <div>
                   <p className="text-sm text-muted-foreground">Email</p>
-                  <p className="font-medium">contact@pixelcraft.com</p>
+                  <p className="font-medium">jeyshreemen.info@gmail.com</p>
                 </div>
               </div>
               
               <div className="flex items-center gap-4">
                 <div className="bg-secondary/50 rounded-full w-12 h-12 flex items-center justify-center text-accent">
-                  <Phone className="h-5 w-5" />
+                  <FaDiscord className="h-5 w-5" />
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Phone</p>
-                  <p className="font-medium">+1 (234) 567-8901</p>
+                  <p className="text-sm text-muted-foreground">Discord</p>
+                  <p className="font-medium">#jey6690</p>
                 </div>
               </div>
               
