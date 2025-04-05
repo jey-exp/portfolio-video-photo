@@ -1,4 +1,3 @@
-import React from "react";
 import { CardBody, CardContainer, CardItem } from "./ui/3d-card";
 
 export function ThreeDCardDemo() {
@@ -28,14 +27,6 @@ export function ThreeDCardDemo() {
           />
         </CardItem>
         <div className="flex gap-3 justify-end items-center mt-20">
-          {/* <CardItem
-            translateZ={20}
-            href="https://twitter.com/mannupaaji"
-            target="__blank"
-            className="px-4 py-2 rounded-xl text-xs font-normal dark:text-neutral-200"
-          >
-            Try now →
-          </CardItem> */}
           <CardItem
             translateZ={20}
             className="px-4 py-2 rounded-xl bg-black dark:bg-white dark:text-black text-white text-xs font-bold"

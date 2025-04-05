@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Play, X } from "lucide-react";
 import { Dialog, DialogContent, DialogClose } from "@/components/ui/dialog";
 import { TextGenerateEffect } from "./ui/text-generate-effect";
-import samplevideo from "../../public/sample-video.mp4"
 
 const Hero: React.FC = () => {
   const [showReel, setShowReel] = useState(false);
@@ -67,7 +66,7 @@ const Hero: React.FC = () => {
             <div className="relative bg-card rounded-xl overflow-hidden aspect-video shadow-2xl">
               <video 
                 className="w-full h-full object-cover"
-                poster="https://images.unsplash.com/photo-1605810230434-7631ac76ec81"
+                poster="/Thumbnail.jpg"
                 autoPlay
                 muted
                 loop
@@ -78,10 +77,7 @@ const Hero: React.FC = () => {
               </video>
               <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent"></div>
               <div className="absolute bottom-4 left-4 right-4">
-                <p className="text-white font-medium">My Latest Video Edit</p>
-                {/* <div className="mt-2 h-1.5 w-full bg-white/20 rounded-full overflow-hidden">
-                  <div className="h-full w-3/4 bg-accent rounded-full"></div>
-                </div> */}
+                <p className="text-white font-medium">Can spend sleepless nights</p>
               </div>
             </div>
           </div>
