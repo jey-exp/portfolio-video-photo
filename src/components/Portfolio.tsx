@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Play } from "lucide-react";
+import Modal from "./Modal";
 
 const categories = ["All", "Video Editing", "Color Grading", "Reels", "Photography"];
 
@@ -54,6 +55,10 @@ const Portfolio: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState<String>("All");
   const [hoveredItem, setHoveredItem] = useState<number | null>(null);
   const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const [isModalOpen, setModalOpen] = useState<boolean>(false);
+  const [modalTitle, setModalTitle] = useState<String>("");
+  const [modalType, setModalType] = useState<String>("");
+  const [modalContent, setModalContent] = useState<String>("");
 
   const filteredItems = activeCategory === "All" 
     ? portfolioItems 
@@ -83,6 +88,20 @@ const Portfolio: React.FC = () => {
       });
     };
   }, [filteredItems]);
+
+  const handleModalOpen =(type, title, content)=>{
+    setModalContent(content);
+    setModalTitle(title)
+    setModalType(type);
+    setModalOpen(true);
+    return 
+  }
+  const handleModalClose = ()=>{
+    setModalContent("");
+    setModalTitle("");
+    setModalType("");
+    setModalOpen(false);
+  }
 
   return (
     <section id="portfolio" className="py-20">
@@ -142,6 +161,7 @@ const Portfolio: React.FC = () => {
                       size="icon" 
                       className="rounded-full bg-accent hover:bg-accent/80 w-14 h-14
                         transition-transform duration-300 hover:scale-110"
+                        onClick={()=>{handleModalOpen("video", "Sample", "This")}}
                     >
                       <Play className="h-6 w-6 transition-transform duration-300 hover:translate-x-0.5" />
                     </Button>
@@ -150,6 +170,7 @@ const Portfolio: React.FC = () => {
                     <Button 
                       className="bg-accent hover:bg-accent/80 transition-transform duration-300 
                         hover:translate-y-[-2px]"
+                        onClick={()=>handleModalOpen("image", "Sample", "This")}
                     >
                       View Full Size
                     </Button>
@@ -183,6 +204,9 @@ const Portfolio: React.FC = () => {
           </Button>
         </div>
       </div>
+      {isModalOpen && (
+        <Modal title={modalTitle} content={modalContent} type={modalType} close={handleModalClose}/>
+      )}
     </section>
   );
 };
