@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -7,7 +7,6 @@ import { FaDiscord } from "react-icons/fa6";
 
 
 const Contact: React.FC = () => {
-  const [formData, setFormData] = useState({name:"", email:"", message : "", subject:""})
   const [currentPage, setCurrentPage] = useState(import.meta.env.VITE_PUBLIC_FORM_BASE_URL);
   const [formSubmitUrl, setFormSubmitUrl] = useState(`https://formsubmit.co/${import.meta.env.VITE_PUBLIC_FORM_SUBMIT_KEY}`)  
 
