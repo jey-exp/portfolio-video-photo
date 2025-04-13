@@ -77,7 +77,7 @@ const Hero: React.FC = () => {
               </video>
               <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent"></div>
               <div className="absolute bottom-4 left-4 right-4">
-                <p className="text-white font-medium">Can spend sleepless nights</p>
+                <p className="text-white font-medium">Can spend sleepless nights!</p>
               </div>
             </div>
           </div>

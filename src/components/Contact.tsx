@@ -1,18 +1,15 @@
-
-import React from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Mail, MapPin, Send, Instagram } from "lucide-react";
+import { Mail, MapPin, Send } from "lucide-react";
 import { FaDiscord } from "react-icons/fa6";
 
 
 const Contact: React.FC = () => {
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Contact form submission logic would go here
-    console.log("Form submitted");
-  };
+  const [formData, setFormData] = useState({name:"", email:"", message : "", subject:""})
+  const [currentPage, setCurrentPage] = useState(import.meta.env.VITE_PUBLIC_FORM_BASE_URL);
+  const [formSubmitUrl, setFormSubmitUrl] = useState(`https://formsubmit.co/${import.meta.env.VITE_PUBLIC_FORM_SUBMIT_KEY}`)  
 
   return (
     <section id="contact" className="py-20">
@@ -71,12 +68,13 @@ const Contact: React.FC = () => {
             <div className="relative">
               <div className="absolute -inset-1 bg-gradient-to-r from-accent to-primary/40 rounded-xl blur opacity-20"></div>
               <div className="relative bg-card rounded-xl p-6 md:p-8 shadow-lg">
-                <form onSubmit={handleSubmit} className="space-y-5">
+                {/* @ts-ignore */}
+                <form className="space-y-5" action={formSubmitUrl} method="post" >
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <div className="space-y-2">
                       <label htmlFor="name" className="text-sm font-medium">Name</label>
                       <Input 
-                        id="name" 
+                        name="name" 
                         placeholder="Your name" 
                         className="bg-muted border-none focus-visible:ring-accent"
                         required
@@ -85,7 +83,7 @@ const Contact: React.FC = () => {
                     <div className="space-y-2">
                       <label htmlFor="email" className="text-sm font-medium">Email</label>
                       <Input 
-                        id="email" 
+                        name="email" 
                         type="email" 
                         placeholder="Your email" 
                         className="bg-muted border-none focus-visible:ring-accent"
@@ -97,7 +95,7 @@ const Contact: React.FC = () => {
                   <div className="space-y-2">
                     <label htmlFor="subject" className="text-sm font-medium">Subject</label>
                     <Input 
-                      id="subject" 
+                      name="subject" 
                       placeholder="Project type" 
                       className="bg-muted border-none focus-visible:ring-accent"
                       required
@@ -107,12 +105,13 @@ const Contact: React.FC = () => {
                   <div className="space-y-2">
                     <label htmlFor="message" className="text-sm font-medium">Message</label>
                     <Textarea 
-                      id="message" 
+                      name="message" 
                       placeholder="Tell me about your project..." 
                       className="bg-muted border-none focus-visible:ring-accent min-h-[120px]"
                       required
                     />
                   </div>
+                  <input type="text" name="_next" value={currentPage} className="hidden" />
                   
                   <Button type="submit" className="w-full bg-accent hover:bg-accent/80">
                     <Send className="mr-2 h-4 w-4" />
